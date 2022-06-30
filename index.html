@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html lang="ko">
+ <head>
+	<title>lego</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=divice-width, initial-scale=1, minimum-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<style>
+		/*################ reset ###############*/
+			*{margin:0;padding:0;}
+			body,header,section,footer,nav,div,p,ul,li{margin:0;padding:0;}
+			li{list-style-type:none;}
+			a:link, a:visited{text-decoration:none; color:#222;}
+			header,nav,section{display:block;}
+			img{border:none;}
+		
+		/*################ a 태그 ###############*/
+			body{color:#222;}
+			a:hover, a:focus{/*text-decoration:underline; */color:#1cbcb7;}
+
+		/*################ wrap ###############*/
+			#wrap{/*max-width:1920px; */width:100%; margin:0 auto;}
+
+		/*################ headerWrap / header(1920px) ###############*/
+			#headerWrap{width:100%; position:absolute; left:0; top:0; z-index:1; background-color:#fff;}
+			#header{width:100%;/* margin:0 auto;*/}
+
+			#header a .plus{color:#FD8024;}
+			#header a .plus:hover{color:#1cbcb7;}
+
+		/*################ topManuArea / topManu(1260px) ###############*/
+			#topManuArea{width:100%; border-bottom:1px solid #ddd;}
+			#topManu{width:1260px; height:50px; line-height:50px; margin:0 auto;}
+
+			#topManu li{display:inline; font-size:14px;}
+			#topManu li a{padding:0 10px;}
+
+		/*################ lego_area / logo ###############*/
+			#lego_area{width:100%;}
+			#lego_area .lego_area{width:1260px; margin:0 auto;}
+			#lego_area .lego_area div{float:left;}
+			/*
+				1260px / 3 == 420px
+			*/
+		/*################ lego_area / black ###############*/
+			#lego_area .black{width:420px; height:150px;}
+
+		/*################ mobHeaderBtn(모바일용헤더) ###############*/
+			#mobHeaderBtn{display:none;}
+			
+		/*################ legoArea / main ###############*/
+			#lego_area .main{width:420px;}
+			/*
+				420 - 100 == 320
+				320 / 2 == 160
+				150(높이) - 100 == 50 / 2 ==25
+			*/
+			#logo{width:100px; padding-left:160px; padding-top:25px;}
+			#logo a img{width:100%; transition:transform 2s ease-in-out 0.2s;}
+			#lego_area .main:hover a img{transform:rotate(360deg)/* scale(0.8);*/}
+			
+			#lego_area .lego_area:after{content:""; display:block; clear:both; background-color:#ccf;}
+			#lego_area:after{content:""; display:block; clear:both; background-color:#ccf;}
+		
+		/*################ lego_area / sch ###############*/
+			#sch{width:420px;}
+			/*
+				420 / 6 == 70px
+				높이150 - 40 == 110 / 2 == 55px
+			*/
+			#sch form{width:160px; height:40px; padding-top:55px; float:left;}
+			#sch fieldset{border:none;}
+			#sch legend{display:none;}
+
+			/*
+				돋보기 크기 40*40으로
+				70 - 40 == 30남음
+				+120 == 150
+				70 + 120 ==190px
+			*/
+			#sch .input{width:120px; float:left;}
+			#sch .input input{width:100%; height:37px; border:none;/*1px solid #ccc*/}
+			#sch .btn{width:20px; padding:10px 0 0 10px; float:left;}
+			#sch .btn a img{width:100%;}
+			
+		/*####### infoMenu ######*/
+			#infoMenu ul{width:260px; float:left;}
+			/*
+				420 - 160 == 260
+				350 - 230 == 120
+			*/
+			#infoMenu li{height:40px; padding-top:55px; line-height:40px; font-size:14px; text-align:right; float:left;}
+			#infoMenu li a{padding:0 10px;}
+			#infoMenu li a span{padding:0 4px; background-color:#ccc; color:#fff; border-radius:14px;}
+
+		/*################ gnbArea / gnb(1260px) ###############*/
+			#gnbArea{width:100%; border-top:1px solid #ddd; border-bottom:1px solid #f1f1f1;}
+			#gnbArea div{width:1260px; margin:0 auto;}
+			/*
+				250 * 3 == 750px*/
+			
+			#gnb{width:100%; height:50px; line-height:50px;/* margin:0 auto; */}
+		
+		/*######## gnb / .gnb(li) #######*/
+			/*
+				1260 / 3 == 420px
+
+				가장 긴 글이 249 == 250*/
+			
+			#gnb .gnb{text-align:center; float:left;}
+		
+		/*######## gnb / .gnb / .plus(span) #######*/
+			#gnb .gnb a{padding:0 27px;}
+
+			#gnb .gnb ul{width:180px; font-size:13px; background-color:rgba(225,225,225,0.5); display:none; position:absolute;}
+		
+		/*######## gnb / .gnb / ul / li #######*/
+			#gnb .gnb ul li{width:100%; text-align:left;}
+			#gnb .gnb ul li a{padding:0 10px;}
+
+
+		/*######## 기능 #######
+			script의 click으로
+			#gnb li:hover ul{display:block;}*/
+
+			#gnb .gnb ul li:hover{background-color:rgba(0,0,0,0.1);}
+			#gnb .gnb ul li:hover a{color:#1cbcb7;}
+
+
+		/*################ gnb 가상객체 ###############
+			#gnb:after{content""; display:block; clear:both;}*/
+
+
+		/*################ container ###############*/
+			#container{width:100%;}
+
+		/*################ legoArea(visual영역) ###############*/
+			#legoArea{width:100%;}
+
+		/*################ lego(1920px) ###############*/
+			#lego{width:100%;}
+			
+		/*################ wideArea ###############*/
+			#wideArea{max-width:1920px; width:100%; margin:0 auto;}
+
+		/*################ wideArea / wide(1920*550px) ###############*/
+			#wide{width:100%;/* height:550px; */position:relative;}
+			#wide .img{width:100%;}
+			#wide .img a img{width:100%;}
+
+		/*################ wideArea / mainText ###############*/
+			#mainText{width:350px; padding:10px 0; position:absolute; left:400px; top:50%; transition:left 0.2s linear;}
+
+			/*960 - (350+250) == 360*/
+			#mainText .textBox{width:100%;}
+			#mainText h2{width:100%; font-size:36px;}
+			#mainText .text{width:100%; color:rgba(0,0,0,0); transition:color 1s linear 0.3s}
+
+		/*###### mainText / button ######*/
+			#mainText .button{width:100%; padding-top:20px; opacity:0; transition:opacity 1s linear 0.8s;}
+			#mainText .button p{border:1px solid #222; width:100px; margin-right:20px; height:30px; line-height:30px; text-align:center; float:left; border-radius:16px; cursor:pointer;}
+
+			/*기능*/
+			#wide:hover #mainText{left:10%;}
+			#wide:hover #mainText .text{color:#222;}
+			#wide:hover #mainText .button{opacity:1;}
+
+			#mainText .button p:hover, #mainText .button p:focus{border:1px solid #fff; background-color:#fff; color:#1cbcb7;}
+
+			#mainText .button:after{content:""; display:block; clear:both;}
+		
+		/*################ guidArea ###############*/
+			#guidArea{width:100%; height:150px; padding-top:30px;}
+
+		/*################ guid (1260px) ###############*/
+			#guid{width:1260px; margin:0 auto;}
+			#guid ul{width:100%;}
+
+			/*
+				1260 * 3 == 420
+				420 - 20(margin-left) ==  400px
+			*/
+			#guid li{width:400px; margin-left:20px; float:left;}
+			#guid li:hover .img{border:2px solid #faa;}
+			#guid li:hover a{color:#1cbcb7;}
+
+			#guid p{float:left;}
+
+			/*100-4 == 96px*/
+			#guid .img{width:96px; border:2px solid rgba(0,0,0,0); border-radius:10px; transition:0.1s linear 0.1s}
+			#guid .img a img{width:100%; border-radius:10px;}
+			/*#guid .img:hover{border:2px solid #faa;}*/
+
+		/*########### guid / li / text(p) ###########*/
+			#guid .text{width:280px; margin:30px 0 0 20px;}
+			
+			/*## a 태그 (인라인) ##*/
+			#guid .text a{display:block;}
+			#guid .text a b{display:block; font-size:20px; font-weight:400;}
+			#guid .text a span{color:#888;}
+
+			#guid li:after{content:""; display:block; clear:both;}
+			#guid ul:after{content:""; display:block; clear:both;}
+			
+		/*################ topArea / top(1260px) ###############*/
+			#topArea{width:100%;}
+			#top{width:1260px; margin:0 auto;}
+
+			#top h3{width:100%; height:45px; padding:30px 0 10px; line-height:45px; font-size:30px; font-weight:400;}
+			#top ul{width:100%;/* height:496px;*/}
+
+		/*########### top / li ###########*/
+			/*
+				1260 - 60 == 1200
+				1200 / 2 == 600px
+			*/
+			#top li{width:600px; float:left; overflow:hidden;}
+			#top .right{margin-right:60px;}
+
+		/*########### top / li / p ###########*/
+			#top p{width:100%; padding-bottom:10px;}
+			#top .img{width:100%;}
+			#top .img a img{width:100%; transform:scale(1); transition:transform 5s linear;}
+
+
+			#top  li:hover .img a img{transform:scale(0.8);}
+
+			#top .text{font-size:24px; transition:padding 0.5s linear;}
+			#top li:hover .text{padding-left:10px;}
+
+
+			#top .name{font-size:14px; color:#888;}
+
+			#top ul:after{content:""; display:block; clear:both;}
+
+		/*################ itemArea / item(1260px) ###############*/
+			#itemArea{width:100%;}
+			#item{width:1260px; margin:0 auto;}
+
+			#item h3{width:100%; height:45px; padding:80px 0 10px; line-height:45px; font-size:30px; font-weight:400;}
+			#item ul{width:100%;/* height:702px;*/}
+			
+			/*
+				1260 / 5(개씩) == 252px
+				252 - 20 == 232
+				232 - 2(border) == 230
+			*/
+			#item li{width:230px; margin-right:22px; float:left; }
+			#item .img{width:100%; border:1px solid rgba(0,0,0,0);}
+			#item .img a img{width:100%; transition:transform 2s ease-out 0.2s; border-radius:30px;}
+
+			#item li:hover .img a img{transform:rotate(360deg) scale(0.5);}
+
+		/*########### item / li / div ###########*/
+			#item div{width:100%; padding:5px 0 30px;}
+			#item p{width:100%; line-height:30px;}
+			
+			#item .name{font-size:20px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+			#item .price{font-size:14px; color:#FD8024;}
+
+			#item ul:after{content:""; display:block; clear:both;}
+
+		/*################ middleArea / middle(1920px) ###############*/
+			#middleArea{width:100%;}
+			#middle{width:1920px; height:413px; padding-top:80px; margin:0 auto;}
+
+			/*
+				1920 / 2 == 960px == 50%
+			*/
+			#middle div{width:50%; float:left;}
+			#middle .img a img{width:100%;}
+
+			/*960-100 == 860px*/
+			#middle .descArea{height:100%; background-color:#85513C; color:#fff; position:relative;}
+			#middle .desc{width:600px;position:absolute; left:100px; top:130px;}
+			#middle .desc h3{font-size:34px; opacity:0; transition:opacity 0.2s linear;}
+
+			#middleArea:hover #middle .desc h3{opacity:1;}
+
+			#middle .desc h4{font-size:18px; font-weight:400; opacity:0; transition:opacity 0.2s linear 0.2s;}
+			#middleArea:hover #middle .desc h4{opacity:1;}
+
+		/*########### middle / desc / button(div) ###########*/
+			#middle .desc .button{width:100%; height:100%; padding-top:50px; opacity:0; transition:opacity 0.2s linear 0.2s;}
+			#middle p{border:1px solid #fff; width:100px; margin-right:20px; height:30px; line-height:30px;text-align:center; float:left; border-radius:16px;}
+			
+			/*기능*/
+			#middleArea:hover .desc .button{opacity:1;}
+			#middle p:hover{background-color:#fff;}
+
+			#middle p a{color:#fff; padding:0 7px;}
+			#middle p:hover a{color:#85513C;}
+
+		/*################ setArea / set(1260px) ###############*/
+			#setArea{width:100%;}
+			#set{width:1260px; height:747px; margin:0 auto;}
+
+			#set h4{width:100%; padding-top:110px; font-weight:400; color:#888;}
+			#set h3{width:100%; padding-bottom:10px; height:45px; line-height:45px; font-size:30px; font-weight:400;}
+
+		/*########### set / big_set ###########*/
+			#set .big_set{width:420px;/* height:510px; */padding:25px 0; text-align:center; float:left;}
+			/*560 - 510 == 50px, 50 / 2 == 25px*/
+			#set .big_set p{padding-bottom:10px;}
+			#set .big_set a img{width:100%; opacity:0.5; transform:scale(1); transition:opacity 0.5s, transform 0.3s linear;}
+			
+			#set .big_set .text{color:#888;}
+			#set .big_set .name{font-size:24px;}
+
+			#set .big_set:hover a img{opacity:1; transform:scale(0.98);}
+
+		/*########### set / li ###########*/
+			#set ul{width:840px;/* height:560px;*/ float:left;}
+			/*
+				1260 - 420(div) == 840
+				840 / 3 == 280px(li)
+				280 - 80(margin-left) == 200px
+
+				li의 높이 240px
+			*/
+			#set li{width:200px; margin-left:80px; margin-bottom:40px;/* border-radius:30px; */float:left;}
+
+			#set li p{width:100%; text-align:center;}
+			#set .img a img{width:100%; border-radius:25px; transform:scale(1); opacity:0.5; transition:opacity 0.3s, transform 0.5s linear;}
+			/*기능*/
+			#set li:hover a img{opacity:1; transform:scale(0.98);}
+
+			/*width:100%*/
+			#set li .name{height:30px; padding-top:10px; line-height:30px; font-size:18px;}
+
+			#set:after{content:""; display:block; clear:both;}
+
+		/*################ trendArea / trend(1260px) ###############*/
+			#trendArea{width:100%;}
+			#trend{width:1260px; margin:0 auto;}
+			#trend h3{width:100%; height:45px; padding:80px 0 10px; line-height:45px; font-size:30px; font-weight:400;}
+			
+			#trend ul{width:100%;/* height: 531px;*/}
+
+			/*
+				top영역과 동일
+
+				1260 - 60 == 1200
+				1200 / 2 == 600px
+			*/
+			#trend li{width:600px; float:left; overflow:hidden;}
+			#trend .right{margin-right:60px;}
+
+		/*########### trend / li / p ###########*/
+			#trend p{width:100%; padding-bottom:10px;}
+			#trend .img{width:100%;}
+			#trend .img a img{width:100%; transform:scale(1); transition:transform 1s linear;}
+			/*기능*/
+			#trend  li:hover .img a img{transform:scale(1.1);}
+
+			#trend .text{font-size:24px;}
+			#trend .name{font-size:14px; color:#888;}
+
+			#trend ul:after{content:""; display:block; clear:both;}
+
+		/*################ bestArea / best(1260px) ###############*/
+			#bestArea{width:100%;}
+			#best{width:1260px; margin:0 auto;}
+			#best h3{width:100%; height:45px; padding:80px 0 10px; line-height:45px; font-size:30px; font-weight:400;}
+
+			#best ul{width:100%;/* height:358px;*/}
+			/*
+				1260 / 4 == 315px
+				315 - 25(margin-right) == 290px
+				25 + 8(margin없앤 값 / 3) == 33px
+			*/
+			#best li{width:290px; margin-right:33px; float:left;}
+			#best .no_margin{width:290px; margin-right:0;}
+			/*290 - 2 == 288px*/
+			#best .img{width:288px; padding:20px 0; border:1px solid rgba(0,0,0,0); background-color:#fff;}
+			#best .img a img{width:100%; transform:scale(1); transition:transform 1s linear;}
+
+			#best .img:hover{border:1px solid #ccc;}
+			#best .img:hover a img{transform:scale(0.9);}
+
+		/*########### best / li / div ###########*/
+			#best div{width:100%; padding:5px 0;}
+			#best p{width:100%; font-size:20px; line-height:30px;}
+			
+			#best .item{font-size:14px; color:#888;}
+			#best .title{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+			#best .price{color:#FD8024;}
+			
+			#best ul:after{content:""; display:block; clear:both;}
+
+		/*################ serviceArea / service(1260px) ###############*/
+			#serviceArea{width:100%;/* background-color:#FD8024;*/}
+			#serviceArea h3{width:1260px; height:45px; padding:80px 0 10px; line-height:45px; font-size:30px; font-weight:400; margin:0 auto;}
+
+			#service{width:100%; margin:0 auto; overflow:hidden;}
+			#service .line{width:100%; height:150px; line-height:150px; font-size:45px; text-align:center;
+			background-color:rgba(255,230,131,0); transition:background-color 0.5s linear 0.1s;}
+
+			#service .line .nm0{opacity:0; transition:opacity 0.5s linear;}
+			#service .line .nm1{color:#1cbcb7; opacity:0; transition:opacity 0.5s linear 0.2s;}
+			#service .line .nm2{color:#1cbcb7;opacity:0; transition:opacity 0.5s linear 0.4s;}
+			#service .line .nm3{opacity:0; transition:opacity 0.5s linear 0.6s;}
+			#service .line .nm4{opacity:0; transition:opacity 0.5s linear 0.8s;}
+			/*기능
+				...
+			*/
+			#service:hover .line{background-color:rgba(255,230,131,1);}
+			#service:hover .line span{opacity:1;}
+
+		/*################ service / button ###############*/
+			/*40+20 == 60*/
+			#service .button{width:160px; /*float:right;*/ margin:0 auto;}
+			#service .button p{width:40px; height:40px; line-height:40px; background-color:#ccc; float:left; border-radius:20px; text-align:center; margin:0 20px; cursor:pointer;}
+			#service .button p img{height:80%; padding-top:10%; opacity:0.5;}
+
+			#service .button p:hover{background-color:#aaa;}
+			#service .button a{color:rgba(0,0,0,0); font-size:1px;}
+
+			#service .button:after{content:""; display:block; clear:both;}
+
+		/*################ service / ul ###############*/
+			#service ul{width:2520px;/* height:326px;*/padding-top:20px;}
+			
+			/*
+				1260 / 5(개씩) == 252px
+				252 - 20 == 232
+				232 - 2(border) == 230
+
+				근데 총 10개 세로로 길개해서
+
+				252*10 == 2520
+			*/
+			#service li{width:230px; margin-right:22px; float:left;}
+			#service .img{width:100%; border:1px solid rgba(0,0,0,0);}
+			#service .img a img{width:100%;/* opacity:0.6; transition:opacity 0.5s;*/}
+
+			#service .img:hover{border:1px solid #ccc;}
+			/*#service .img:hover a img{opacity:1;}*/
+
+			/*#service .img:hover{background-color:rgba(225,0,0,0.2);}*/
+
+		/*########### service / li /  desc(div) ###########*/
+			#service div{width:100%; padding:5px 0 5px;}
+			#service p{width:100%; font-size:20px; line-height:30px;}
+			
+			#service .name{overflow:hidden; white-space:nowrap; text-overflow:ellipsis;}
+			#service .price{font-size:14px; color:#FD8024;}
+			
+
+			#service ul:after{content:""; display:block; clear:both;}
+		/*################ collaboArea / collabo(1260px) ###############*/
+			#collaboArea{width:100%;}
+			#collabo{width:1260px; margin:0 auto;}
+
+			#collabo h3{width:100%; height:45px; padding:80px 0 10px; line-height:45px; font-size:30px; font-weight:400;}
+
+			#collabo div{width:100%;}
+			#collabo .big_img{width:100%; margin-bottom:30px;}
+			#collabo .big_img a img{width:100%; opacity:1; transition:opacity 0.5s;}
+
+			/*기능*/
+			#collabo .big_img:hover a img{opacity:0.5;}
+
+			#collabo ul{width:100%;/* height:257px;*/}
+
+		/*########### collabo / li ###########*/
+			/*
+				1260 / 2 == 630 , 630-15 == 615px
+				30이 남음(li: right의 margin-right)
+
+				반응형으로
+				li 너비 50%씩 margin-right는 없어야 한다
+				li width:49%씩 margin-right, margin-left 1%씩
+			*/
+			#collabo li{width:49%; float:left;}
+			#collabo .right{margin-right:1%;}
+			#collabo .left{margin-left:1%;}
+			
+			#collabo .img{width:100%;}
+			#collabo .img a img{width:100%; opacity:1; transition:opacity 0.5s;}
+
+			/*기능*/
+			#collabo .img:hover a img{opacity:0.5;}
+
+			#collabo ul:after{content:""; display:block; clear:both;}
+
+		/*################ storeArea / store(1260px) ###############*/
+			#storeArea{width:100%;}
+			#store{width:1260px; margin:0 auto;}
+			#store .storeBox{width:100%; padding-bottom:120px;}
+			#store .title{width:100%; padding:110px 0 10px;}
+
+			#store h3{width:80%; line-height:45px; font-size:30px; font-weight:400; float:left;}
+
+			#store .more{width:20%; line-height:45px; text-align:right; float:left;}
+			#store .more a{font-size:16px; color:#1cbcb7;}
+			#store .more a:hover{color:#222;}
+			
+			#store .title:after{content:""; display:block; clear:both;}
+
+			#store ul{width:100%;/* height:370px;*/}
+			/*
+				1260 - 60 == 1200
+				1200 / 2 == 600px
+			*/
+			#store li{width:600px; border:1px solid #eaeaea; float:left; transition:border-radius 0.2s linear, background-color 0.5s linear 0.1s;}
+			/*1+1 == 2*2,	60 - 4 ==56px인데 자꾸 붙어서 50px 적용*/
+			#store .right{margin-right:50px;}
+
+		/*########### store / li / p ###########*/
+			/*
+				350 - (10+10) == 330px
+			*/
+			#store .map{width:330px; padding:10px; float:left;}
+			#store .map a img{width:100%; transition:border-radius 0.2s linear;}
+			#store li:hover{border-radius:30px; background-color:rgba(255,230,131,0.8);}
+			#store li:hover .map a img{border-radius:30px;}
+
+		/*########### store / li / div ###########*/
+			/*600 - (350+20) == 230px*/
+			#store .off{width:230px; padding:10px; font-size:14px; float:left;}
+			#store .off p{width:100%; padding-bottom:10px;}
+			#store .offline{padding:0 5px; background-color:#201D48; color:#fff;}
+			
+			#store .location:hover a{text-decoration:underline; color:#201D48;}
+			#store .number{color:#888;}
+
+			#store ul:after{content:""; display:block; clear:both;}
+
+
+		/*################ footerWrap(footer영역) ###############*/
+			#footerWrap{width:100%; background-color:#fafafa; padding-bottom:50px;}
+
+		/*################ footer ###############*/
+			#footer{width:100%; font-size:14px;}
+			#footer a{padding:0 10px;}
+
+			#footer .footerBorder{border-top:2px solid #ddd; border-bottom:1px solid #dedede;}
+		
+		/*################ footer_info(1260px) ###############*/
+			#footer_info{width:1260px; margin:0 auto;}
+			#footer_info ul{width:50%; padding:10px 0; float:left;}
+
+		/*######### footer_info(ul) ##########*/
+			/*
+				1260 / 2 == 630px
+				근데 50%, follow_us랑 같은 선상의 위치로
+			*/
+			#footer_menu li{display:inline;}
+
+		/*######### follow_us(ul) ##########*/
+			#follow_us{text-align:right;}
+			#follow_us li{display:inline-block; width:20px; height:20px; margin:0 5px; background-color:#7a7; overflow:hidden; border-radius:5px;}
+			#follow_us li a{padding:0;}
+			#follow_us li a img{width:100%;}
+			/*기능*/
+			#follow_us li:hover img,#follow_us li:focus img{margin-top:-20px;}
+
+			#footer_info:after{content:""; display:block; clear:both;}
+
+		/*################ footerContArea / footerCont ###############*/
+			#footerContArea{width:100%;}
+			#footerCont{width:1260px; margin:0 auto;}
+			#footerCont div{width:630px; float:left;}
+		
+		/*######### footerCont / logo(div) ##########*/
+			/*
+				1260 / 2 == 630px, 이것도 50%
+			*/
+			#footerCont .logo{padding:50px 0;}
+			#footerCont .logo div{border-right:1px solid #dedede;}
+			#footerCont .logo .lego{width:100px; margin-left:10px;}
+			#footerCont .logo .lego a{padding:0;}
+			#footerCont .logo .lego a img{width:100%; transition:transform 2s ease-out 0.2s;}
+			#footerCont .logo .lego:hover a img{transform:rotate(360deg) scale(0.8);}
+
+		/*######### footerCont / p ##########*/
+			#footerCont p{width:100%; margin-bottom:20px;}
+
+		/*######### footerCont / logo / location(p) ##########*/
+			/*630 / 3 == 210px, 210 - 20 == 190*/
+			#footerCont .location{width:190px; padding:10px; margin-left:10px; background-color:rgb(32,29,72);}
+			#footerCont .location span{padding:0 10px;}
+			#footerCont .location a{color:#fff;}
+
+			#footerCont .location:hover a{color:#1cbcb7;}
+
+		/*######### footerCont / subscribe(div) ##########*/
+			#footerCont .subscribe{padding:50px 0;}
+			/*
+				630px - 50px(padding-left) == 580px - 1 == 579
+			*/
+			#footerCont .subscribe div{width:579px; padding-left:50px;}
+			#footerCont .title{/*width:100%; */ height:30px;}
+			#footerCont .address{width:204px; height:40px; background-color:#fff; float:left;}
+
+			/*########*/
+			#address{width:100%; height:100%; text-indent:10px; background-color:rgba(255,255,255,1); border:1px solid rgb(253,128,36);}
+
+			#footerCont .btn{width:50px; height:42px; float:left;}
+			#btn{width:100%; height:100%; background-color:rgb(253,128,36); border:1px solid rgb(253,128,36); border-radius:0 5px 5px 0; color:#fff;}
+
+			#footerCont .btn:hover #btn{background-color:#fff;color:rgb(253,128,36)}
+
+			#footerCont:after{content:""; display:block; clear:both;}
+
+		/*######### copyrightArea / copyright ##########*/
+			#copyrightArea{width:100%; border-top:1px solid #ddd;}
+			#copyrightMenu{width:1260px; margin:0 auto;}
+			#copyrightMenu .border{padding-top:50px;}
+
+			#copyrightMenu ul{width:100%; padding:10px 0;}
+			#copyrightMenu li{display:inline-block;}
+			#copyright{width:100%; padding-top:30px;text-indent:10px;}
+			#copyright a{padding:0;}
+
+
+		/*########### 버리는 영역_임시보관소 ##########*/
+			h1{position:absolute; left:-9999px; width:1px; height:1px; font-size:1px; line-height:0; overflow:hidden;}
+
+
+		/*##############################################################*/
+		
+		/*############## 태블릿pc ############*/
+			@media all and (min-width:768px) and (max-width:1024px){
+
+			/*################ headerWrap / header(768px) ###############*/
+			#header{width:100%;}
+
+			/*################ topManuArea / topManu(768px) ###############*/
+			#topManuArea{width:100%; border-bottom:1px solid #ddd;}
+			#topManu{width:768px; height:40px; line-height:40px; text-align:center;}
+
+			#topManu li{font-size:12px;}
+
+			/*################ lego_area / logo(768px) ###############*/
+			#lego_area{width:100%;}
+			#lego_area .lego_area{width:768px; margin:0 auto;}
+			#lego_area .lego_area div{float:left;}
+			/*
+				768px / 3 == 256px
+			*/
+
+			/*################ lego_area / black ###############*/
+			#lego_area .black{width:256px; height:90px; position:relative;}
+
+			/*################ mobHeaderBtn(모바일용헤더) ###############*/
+			/*90-20 == 70 / 2 == 35px*/
+			#mobHeaderBtn{display:block; width:40px; height:25px; text-align:center;
+			position:absolute; left:5%; top:33px; cursor:pointer;}
+			#mobHeaderBtn p:before{content:"─"; display:block; height:4px; margin:2px 0;}
+			#mobHeaderBtn p{height:4px; line-height:4px; color:#555; padding:1px 0;}
+			#mobHeaderBtn p:after{content:"─"; display:block;height:4px; margin:2px 0;}
+			
+
+			/*################ legoArea / main ###############*/
+			#lego_area .main{width:256px;}
+			/*
+				256 - 60 == 196
+				196 / 2 == 98
+
+				90(높이) - 60 == 30 / 2 == 15
+			*/
+			#logo{width:60px; padding-left:98px; padding-top:15px;}
+			#logo a img{width:100%;}
+
+			/*################ lego_area / sch ###############*/
+			#sch{width:256px;}
+			/*
+				420 / 6 == 70px
+				(높이)90 - 40 == 50 / 2 == 25px
+			*/
+			#sch form{width:100%; height:40px; padding-top:25px; float:none;}
+			/*돋보기 크기 40*40 실제크기 20*20*/
+			#sch .input{display:none;}
+
+			#sch .btn{width:20px; padding:10px 0 0 210px; float:none;}
+			
+
+			/*####### infoMenu ######
+				script 클릭으로 나오게? 고민
+			#infoMenu ul{width:216px; float:left;}*/
+			/*
+				256- 40 == 216
+				90 - 40 == 50 / 2 == 25
+			
+			#infoMenu li{height:40px; padding-top:25px; line-height:40px; font-size:12px; text-align:right; float:left;}
+			#infoMenu li a{padding:0 9px;}*/
+
+			#infoMenu{display:none;}
+
+			/*################ gnbArea / gnb(768px) ###############*/
+			#gnbArea{font-size:12px;}
+			#gnbArea div{width:768px;}
+			
+			#gnb{height:40px; line-height:40px;}
+
+			/*######## gnb / .gnb(li) #######*/
+			#gnb .gnb{text-align:center; float:left;}
+		
+			/*######## gnb / .gnb / .plus(span) #######*/
+			#gnb .gnb a{padding:0 11px;}
+
+			#gnb .gnb ul{font-size:11px;}
+
+			/*################ wideArea / mainText ###############*/
+			#mainText{position:absolute; top:44%; left:4%;/* text-shadow:0 0 20px rgba(255,255,255,1);*/}
+			#mainText h2{font-size:26px;}
+
+			/*#mainText:hover{left:4%;}*/
+			#mainText .text{color:#222;}
+			#mainText .button{opacity:1;}
+
+			/*################ guid (768px) ###############*/
+			#guid{width:100%;}
+			#guid ul{width:768px; margin:0 auto;}
+
+			/*
+				li 너비 100px+ border 2px == 102px * 3 == 306px
+				768 - 306 == 462px / 6(3*2) == 77px
+			*/
+			#guid li{width:100px; margin:0 77px; float:left;}
+			#guid li:hover .img{border:2px solid #faa;}
+			#guid li:hover a{color:#1cbcb7;}
+
+			#guid p{float:none;}
+
+			/*########### guid / li / text(p) ###########*/
+			#guid .text{width:100%; margin:0px;}
+			
+			/*## a 태그 (인라인) ##*/
+			#guid .text a b{display:block; font-size:16px; font-weight:400; text-align:center;}
+			#guid .text a span{display:none;}
+
+			/*################ topArea / top(768px) ###############*/
+			#top{width:768px; margin:0 auto;}
+			#top h3{font-size:28px;}
+
+			/*########### top / li ###########*/
+			/*
+				49% margin-right:2%
+				50%인데 1%씩 모자라니 1+1 == 2%
+			*/
+			#top li{width:49%; float:left;}
+			#top .right{margin-right:2%;}
+
+			/*########### top / li / p ###########*/
+			#top p{width:100%; padding-bottom:5px;}
+			
+
+			#top .text{font-size:20px;}
+
+			
+
+			/*################ itemArea / item(768px) ###############*/
+			#item{width:768px;}
+			#item h3{padding:60px 0 5px; font-size:28px;}
+			
+			/*
+				768 / 4 == 192px
+				192 - 2 == 190px
+			*/
+			#item li{width:190px; margin-right:0px; float:left; border:1px solid rgba(0,0,0,0);}
+
+			/*########### item / li / div ###########*/
+			#item div{padding:5px 0;}
+			#item p{line-height:20px;}
+			
+			#item .name{font-size:16px;}
+
+			/*################ middleArea / middle(768px) ###############*/
+			#middleArea{display:none;}
+
+			/*################ setArea / set(768px) ###############*/
+			#setArea{display:none;}
+
+			/*################ topArea / top(768px) ###############*/
+			#trend{width:768px; margin:0 auto;}
+
+			#trend h3{padding:60px 0 5px; font-size:28px;}
+
+			/*########### top / li ###########*/
+			/*
+				49% margin-right:2%
+				50%인데 1%씩 모자라니 1+1 == 2%
+			*/
+			#trend li{width:49%; float:left;}
+			#trend .right{margin-right:2%;}
+
+			/*########### top / li / p ###########*/
+			#trend p{width:100%; padding-bottom:5px;}
+
+			#trend .text{font-size:20px;}
+
+			/*################ bestArea / best(768px) ###############*/
+			#bestArea{width:100%;}
+			#best{width:768px;}
+			#best h3{padding:60px 0 5px; font-size:28px;}
+			/*
+				#best ul{width:100%;}
+			
+				768 / 4 == 192px
+				192 - 10(margin-right) == 182px
+				10 *3 == 30
+				3(no_margin 10/3 == 2.5 == 2)  + 182 == 184px
+			*/
+			#best li{width:184px; margin-right:10px;}
+			#best .no_margin{width:184px; margin-right:0;}
+
+			/*184 - 2 == 182px*/
+			#best .img{width:182px;}
+
+			/*########### best / li / div ###########*/
+			#best p{line-height:20px;}
+			
+			#best .item{font-size:12px;}
+			#best .title{font-size:16px;}
+			#best .price{font-size:14px;}
+
+			/*################ serviceArea / service(768px) ###############*/
+			#serviceArea h3{width:768px; padding:60px 0 5px; font-size:28px; margin:0 auto;}
+
+			#service{width:100%;}
+			#service .line{height:100px; line-height:100px; font-size:35px;}
+
+			#service ul{padding-top:10px;}
+			/*
+				768 / 4 == 192px
+				li 192px + 10 == 202
+				총 10개 가로로 쭉
+
+				202* 10 == 2020
+			*/
+			#service li{width:192px; margin-right:22px; float:left;}
+			#service .img{width:190px; border:1px solid rgba(0,0,0,0);}
+			#service .img a img{width:100%;}
+
+			#service .img:hover{border:1px solid #ccc;}
+
+			/*########### service / li / div ###########*/
+			#service div{width:100%; padding:5px 0 5px;}
+			#service p{width:100%; font-size:16px; line-height:20px;}
+
+			/*################ collaboArea / collabo(768px) ###############*/
+			#collaboArea{width:100%;}
+			#collabo{width:100%; margin:0 auto;}
+
+			#collabo h3{width:768px; padding:60px 0 5px; font-size:28px; margin:0 auto;}
+			#collabo .big_img{margin-bottom:1%;}
+
+			/*################ storeArea / store(768px) ###############*/
+			#store{width:768px;}
+			#store .title{padding:100px 0 10px;}
+			#store h3{line-height:35px; font-size:28px;}
+			#store .more{line-height:35px;}
+
+			/*
+				%는 border있어서 못씀
+				768 - 20(margin-right) == 748
+				748 / 2 == 374
+				374 - 2(border) == 372px
+			*/
+			
+			#store li{width:372px; border:1px solid #eaeaea; float:left;}
+			#store .right{margin-right:20px;}
+
+			/*########### store / li / p ###########*/
+				/*
+					372 - (10+10) == 352px
+				*/
+				#store .map{width:352px;}
+
+			/*########### store / li / div ###########*/
+				#store .off{width:352px;}
+
+
+			/*################ footer ###############*/
+			#footer{width:100%; font-size:14px;}
+			#footer a{padding:0 5px;}
+
+			/*################ footer_info(768px) ###############*/
+			#footer_info{width:768px;}
+
+			/*################ footerContArea / footerCont(768px) ###############*/
+			#footerContArea a{padding:0 10px;}
+			#footerCont{width:768px;}
+			#footerCont div{width:50%; float:left;}
+
+			/*######### footerCont / logo(div) ##########*/
+			/*
+				320px / 2 == 160px
+			*/
+			#footerCont .logo{padding:20px 0;}
+			#footerCont .logo div{width:92%; padding-left:8%;}
+			#footerCont .logo .lego{width:6em;}
+
+			/*######### footerCont / p ##########*/
+			#footerCont p{margin-bottom:10px;}
+
+			/*######### footerCont / logo / location(p) ##########*/
+			#footerCont .location{width:120px; padding:5px;}
+			#footerCont .location span{padding:0;}
+
+			/*######### footerCont / subscribe(div) ##########*/
+			#footerCont .subscribe{padding:20px 0;}
+			/*	width: 160px	*/
+			#footerCont .subscribe div{width:92%; padding-left:8%; border-left:1px solid #dedede;}
+			/*#footerCont p{padding-left:10px;}*/
+			#footerCont .title{height:30px; font-weight:700;}
+			
+			#footerCont input{font-size:11px;}
+			#footerCont .address{width:180px; height:30px; background-color:#fff;}
+			#footerCont .btn{width:30px; height:32px; float:left;}
+
+			/*######### copyrightArea / copyright(768px) ##########*/
+			#copyrightMenu{width:768px; text-align:center;}
+			#copyrightMenu .border{padding-top:10px;}
+
+			#copyright{padding-top:20px;}
+			}
+
+		/*############## 스마트폰 가로버전 ############*/
+			@media all and (min-width:481px) and (max-width:767px){
+
+			/*################ headerWrap / header(481px) ###############*/
+			#headerWrap{width:100%;}
+			#header{width:100%;}
+
+			/*################ topManuArea / topManu(481px) ###############*/
+			#topManuArea{display:none;}
+
+			/*################ lego_area / logo ###############*/
+			#lego_area{width:100%;}
+			#lego_area .lego_area{width:100%;}
+			#lego_area .lego_area div{float:left;}
+
+			/*################ lego_area / black ###############*/
+			#lego_area .black{width:10%; height:52px; position:relative;}
+
+			/*################ mobHeaderBtn(모바일용헤더버튼+++) ###############*/
+			/*52 -25 == 30 / 2 == 15px*/
+			#mobHeaderBtn{display:block; width:40px; height:25px; text-align:center;
+			position:absolute; left:0; top:15px; cursor:pointer;}
+			#mobHeaderBtn p:before{content:"─"; display:block; height:4px; margin:2px 0;}
+			#mobHeaderBtn p{height:4px; line-height:4px; color:#555; padding:1px 0;}
+			#mobHeaderBtn p:after{content:"─"; display:block;height:4px; margin:2px 0;}
+
+			/*################ legoArea / main ###############*/
+			#lego_area .main{width:45%;}
+			/*
+				5:5
+				1:4.5:4.5
+			*/
+			#logo{width:2.5em; padding-left:0; padding-top:7px;}
+			#logo a img{width:100%;}
+
+			/*################ lego_area / sch(481px) ###############*/
+			#sch{width:45%;}
+			/*
+				17:83
+			*/
+			#sch form{width:15%; height:40px; padding-top:5px;}
+			/*돋보기 크기 40*40 실제크기 20*20*/
+			#sch .input{display:none;}
+
+			#sch .btn{width:20px;float:none;}
+
+			/*####### infoMenu ######*/
+			#infoMenu{width:85%;}
+			#infoMenu ul{width:100%;}
+			#infoMenu li{height:52px; padding-top:0px; line-height:52px; font-size:12px; float:left;}
+			#infoMenu li a{padding:0 4px;}
+			#infoMenu li a span{padding:0 4px; background-color:#ccc; color:#fff; border-radius:14px;}
+			
+
+			/*########################
+				script기능구현
+				display:none; 을 display:block; 로
+			*/
+			/*################ gnbArea / gnb(481px) ###############*/
+			#gnbArea div{width:100%; display:none;}
+
+			/*######## gnb(ul) / .gnb(li) #######*/
+			#gnb .gnb{float:none; background-color:rgba(255,230,131,1); border-bottom:1px solid #fff; font-size:14px;}
+			
+			/*########################
+				script기능구현
+				display:none; 을 display:block; 로
+			*/
+			#gnb .gnb ul{width:100%; font-size:12px; background-color:rgba(255,255,255,0.6); display:none; position:static;}
+
+			/*######## gnb / .gnb / ul / li #######*/
+			#gnb .gnb ul li{width:100%; text-align:left; border-bottom:1px solid rgba(255,230,131,1);}
+			#gnb .gnb ul li a{padding:0 15%;}
+
+			/*################ wideArea / mainText(481px) ###############*/
+			#mainText{position:static; width:100%; background-color:rgba(255,230,131,1); text-align:center;}
+
+			#mainText h2{font-size:20px;}
+			#mainText .text{font-size:12px; color:#222;}
+			
+			/*102*2 == 204px + 20 == 224px*/
+			#mainText .button{width:224px; opacity:1; margin:0 auto;}
+			#mainText .button p{margin-right:0;}
+			#mainText .button .shopBtn{margin-right:20px;}
+
+			/*################ guid (481px) ###############*/
+			#guid{width:100%;}
+			#guid ul{width:480px; margin:0 auto;}
+
+			/*
+				480 / 3 == 160
+				li 너비 100px+ border 2px == 102px * 3 == 306px
+				480-306 == 174px / 6(3*2) == 29
+			*/
+			#guid li{width:100px; margin:0 29px; float:left;}
+			#guid li:hover .img{border:2px solid #faa;}
+			#guid li:hover a{color:#1cbcb7;}
+
+			#guid p{float:none;}
+
+			/*########### guid / li / text(p) ###########*/
+			#guid .text{width:100%; margin:0px;}
+			
+			/*## a 태그 (인라인) ##*/
+			#guid .text a b{display:block; font-size:14px; font-weight:400; text-align:center;}
+			#guid .text a span{display:none;}
+
+			/*################ topArea / top(481px) ###############*/
+			#top{width:481px; margin:0 auto;}
+
+			#top h3{padding:20px 0 5px; font-size:24px;}
+
+			/*########### top / li ###########*/
+			/*
+				49% margin-right:2%
+				50%인데 1%씩 모자라니 1+1 == 2%
+			*/
+			#top li{width:49%; float:left;}
+			#top .right{margin-right:2%;}
+
+			/*########### top / li / p ###########*/
+			#top p{width:100%; padding-bottom:5px;}
+
+			#top .text{font-size:14px;}
+			#top .name{display:none;}
+
+			/*################ itemArea / item(481px) ###############*/
+			#item{width:481px;}
+			#item h3{padding:40px 0 5px; font-size:24px;}
+			#item ul{width:100%;}
+			/*
+				480 / 3 == 160px
+				160 - 2 == 158px
+			*/
+			#item li{width:158px; margin-right:0px; float:left; border:1px solid rgba(0,0,0,0);}
+
+			/*########### item / li / div ###########*/
+			#item div{width:100%; padding:5px 0;}
+			#item p{width:100%; line-height:20px;}
+			
+			#item .name{font-size:16px;}
+			#item .price{font-size:14px;}
+
+			/*################ middleArea / middle(481px) ###############*/
+			#middleArea{display:none;}
+
+			/*################ setArea / set(481px) ###############*/
+			#setArea{display:none;}
+
+			/*################ topArea / top(481px) ###############*/
+			#trend{width:481px; margin:0 auto;}
+
+			#trend h3{padding:40px 0 5px; font-size:24px;}
+
+			/*########### top / li ###########*/
+			/*
+				49% margin-right:2%
+				50%인데 1%씩 모자라니 1+1 == 2%
+			*/
+			#trend li{width:49%; float:left;}
+			#trend .right{margin-right:2%;}
+
+			/*########### top / li / p ###########*/
+			#trend p{width:100%; padding-bottom:5px;}
+
+			#trend .text{font-size:14px;}
+			#trend .name{display:none;}
+
+			/*################ bestArea / best(481px) ###############*/
+			#bestArea{width:100%;}
+			#best{width:481px;}
+			#best h3{padding:40px 0 5px; font-size:24px;}
+			/*
+			#best ul{width:100%;}
+			
+				480 / 3 == 160px
+				160 - 2 == 158px
+			*/
+			#best li{width:160px; margin-right:0px;}
+			#best .no_margin{display:none;}
+
+			/*100 - 2 == 98px*/
+			#best .img{width:158px;}
+
+			/*########### best / li / div ###########*/
+			#best p{line-height:20px;}
+			
+			#best .item{font-size:12px;}
+			#best .title{font-size:16px;}
+			#best .price{font-size:14px;}
+
+			/*################ serviceArea / service(481px) ###############*/
+			#serviceArea h3{width:481px; padding:40px 0 5px; font-size:24px; margin:0 auto;}
+
+			#service{width:100%;}
+			#service .line{height:60px; line-height:60px; font-size:20px;}
+
+			#service ul{width:2520px; padding-top:10px;}
+			/*
+				480 / 3 == 160px
+				160 - 2 == 158px
+			*/
+			/*
+				li 160px
+				총 10개 가로로 쭉
+
+				160* 10 == 1600
+			*/
+			#service li{width:160px; margin-right:22px; float:left;}
+			#service .img{width:158px; border:1px solid rgba(0,0,0,0);}
+			#service .img a img{width:100%;}
+
+			#service .img:hover{border:1px solid #ccc;}
+
+			/*########### service / li / div ###########*/
+			#service div{width:100%; padding:5px 0 5px;}
+			#service p{width:100%; font-size:16px; line-height:20px;}
+
+			/*################ collaboArea / collabo(481px) ###############*/
+			#collaboArea{width:100%;}
+			#collabo{width:100%; margin:0 auto;}
+
+			#collabo h3{width:481px; padding:40px 0 5px; font-size:24px; margin:0 auto;}
+			#collabo .big_img{margin-bottom:1%;}
+
+			/*################ storeArea / store(481px) ###############*/
+			#store{width:481px;}
+			#store .storeBox{width:100%; padding-bottom:80px;}
+			#store .title{width:100%; padding:0;}
+			#store h3{padding:24px 0 5px; font-size:24px;}
+
+			#store .more{padding:24px 0 5px;}
+			
+			/*480- 20 == 460*/
+			#store ul{width:460px; margin:0 auto;}
+			#store li{width:100%; float:none;}
+
+			#store .right{margin-right:0; margin-bottom:1%;}
+
+			/*########### store / li / p ###########*/
+			/*
+				460 - 40(padding값들) == 420 / 2 == 210px
+			*/
+			#store .map{width:210px;}
+			#store .map a img{width:100%;}
+
+			/*########### store / li / div ###########*/
+			#store .off{width:210px; font-size:11px;}
+			#store .off p{padding-bottom:0;}
+
+			#store li:after{content:""; display:block; clear:both;}
+
+
+			/*################ footer ###############*/
+			#footer{width:100%; font-size:12px;}
+			#footer a{padding:0 5px;}
+
+			/*################ footer_info(481px) ###############*/
+			#footer_info{width:481px;}
+			#footer_info ul{width:100%; text-align:center; float:none;}
+
+			/*######### footer_info(ul) ##########*/
+			#footer_menu li{display:inline;}
+
+			/*######### follow_us(ul) ##########*/
+				#follow_us{text-align:center;}
+
+			/*################ footerContArea / footerCont(481px) ###############*/
+			#footerContArea a{padding:0 10px;}
+			#footerCont{width:481px; margin:0 auto;}
+			#footerCont div{width:50%; float:left;}
+
+			/*######### footerCont / logo(div) ##########*/
+			/*
+				320px / 2 == 160px
+			*/
+			#footerCont .logo{padding:20px 0;}
+			#footerCont .logo div{width:92%; padding-left:8%;}
+			#footerCont .logo .lego{width:6em;}
+
+			/*######### footerCont / p ##########*/
+			#footerCont p{margin-bottom:10px;}
+
+			/*######### footerCont / logo / location(p) ##########*/
+			#footerCont .location{width:120px; padding:5px;}
+			#footerCont .location span{padding:0;}
+
+			/*######### footerCont / subscribe(div) ##########*/
+			#footerCont .subscribe{padding:20px 0;}
+			/*	width: 160px	*/
+			#footerCont .subscribe div{width:92%; padding-left:8%; border-left:1px solid #dedede;}
+			/*#footerCont p{padding-left:10px;}*/
+			#footerCont .title{height:30px; font-weight:700;}
+			
+			#footerCont input{font-size:11px;}
+			#footerCont .address{width:180px; height:30px; background-color:#fff;}
+			#footerCont .btn{width:30px; height:32px; float:left;}
+
+			/*######### copyrightArea / copyright(481px) ##########*/
+			#copyrightMenu{width:481px; text-align:center;}
+			#copyrightMenu .border{padding-top:10px;}
+
+			#copyright{padding-top:20px;}
+			}
+
+
+		/*############## 스마트폰 세로버전 ############*/
+			@media all and (min-width:320px) and (max-width:480px){
+
+			/*################ headerWrap / header(320px) ###############*/
+			#headerWrap{width:100%;}
+			#header{width:100%;}
+			/*전체적으로 54px*/
+
+			/*################ topManuArea / topManu(320px) ###############*/
+			#topManuArea{display:none;}
+
+			/*################ lego_area / logo ###############*/
+			#lego_area{width:100%;}
+			#lego_area .lego_area{width:100%;}
+			#lego_area .lego_area div{float:left;}
+
+			/*################ lego_area / black(헤더버튼+++) ###############*/
+			#lego_area .black{width:14%; height:52px; position:relative;}
+
+			/*################ mobHeaderBtn(모바일용헤더) ###############*/
+			/*52 -25 == 30 / 2 == 15px*/
+			#mobHeaderBtn{display:block; width:40px; height:25px; text-align:center;
+			position:absolute; left:0; top:15px; cursor:pointer;}
+			#mobHeaderBtn p:before{content:"─"; display:block; height:4px; margin:2px 0;}
+			#mobHeaderBtn p{height:4px; line-height:4px; color:#555; padding:1px 0;}
+			#mobHeaderBtn p:after{content:"─"; display:block;height:4px; margin:2px 0;}
+
+			/*################ legoArea / main ###############*/
+			#lego_area .main{width:18%;}
+			/*
+				14%18%68%
+			*/
+			#logo{width:2.5em; padding-left:0; padding-top:7px;}
+			#logo a img{width:100%;}
+
+			/*################ lego_area / sch(320px) ###############*/
+			#sch{width:68%;}
+			/*
+				17:83
+			*/
+			#sch form{width:15%; height:40px; padding-top:5px;}
+			/*돋보기 크기 40*40 실제크기 20*20*/
+			#sch .input{display:none;}
+
+			#sch .btn{width:20px;float:none;}
+
+			/*####### infoMenu ######*/
+			#infoMenu{width:85%;}
+			#infoMenu ul{width:100%;}
+			#infoMenu li{height:52px; padding-top:0px; line-height:52px; font-size:12px; text-align:right; float:left;}
+			#infoMenu li a{padding:0 4px;}
+			#infoMenu li a span{padding:0 4px; background-color:#ccc; color:#fff; border-radius:14px;}
+
+			/*########################
+				script기능구현
+				display:none; 을 display:block; 로
+			*/
+			/*################ gnbArea / gnb(320px) ###############*/
+			#gnbArea div{width:100%; display:none;}
+
+			/*######## gnb(ul) / .gnb(li) #######*/
+			#gnb .gnb{float:none; background-color:rgba(255,230,131,1); border-bottom:1px solid #fff; font-size:14px;}
+			
+			/*########################
+				script기능구현
+				display:none; 을 display:block; 로
+			*/
+			#gnb .gnb ul{width:100%; font-size:12px; background-color:rgba(255,255,255,0.6); display:none; position:static;}
+
+			/*######## gnb / .gnb / ul / li #######*/
+			#gnb .gnb ul li{width:100%; text-align:left; border-bottom:1px solid rgba(255,230,131,1);}
+			#gnb .gnb ul li a{padding:0 15%;}
+				
+			/*################ wideArea / mainText ###############*/
+			/*320-20 == 300*/
+			#mainText{position:static; width:100%; background-color:rgba(255,230,131,1); text-align:center;}
+			#mainText .textBox{width:100%;}
+			#mainText h2{width:100%; font-size:20px;}
+			#mainText .text{font-size:12px; color:#222;}
+			
+			/*102
+			#mainText .button{width:102px; font-size:14px; margin:0 auto;}
+			#mainText .button p{margin-right:0; margin-bottom:10px; float:none;}*/
+
+			/*102*2 == 204px + 20 == 224px*/
+			#mainText .button{width:224px; font-size:14px; opacity:1; margin:0 auto;}
+			#mainText .button p{margin-right:0;}
+			#mainText .button .shopBtn{margin-right:20px;}
+
+			/*################ guid (320px) ###############*/
+			#guid{width:303px; margin:0 auto;}
+			#guid ul{width:100%;}
+
+			/*
+				303 * 3 == 101
+				101 - 1(margin-left) ==  100px
+			*/
+			#guid li{width:100px; margin-left:1px; float:left;}
+			#guid li:hover .img{border:2px solid #faa;}
+			#guid li:hover a{color:#1cbcb7;}
+
+			#guid p{float:none;}
+
+			/*########### guid / li / text(p) ###########*/
+			#guid .text{width:100%; margin:0px;}
+			
+			/*## a 태그 (인라인) ##*/
+			#guid .text a b{display:block; font-size:14px; font-weight:400; text-align:center;}
+			#guid .text a span{display:none;}
+
+			/*################ topArea / top(320px) ###############*/
+			#top{width:300px; margin:0 auto;}
+
+			#top h3{padding:10px 0 5px; font-size:20px;}
+
+			/*########### top / li ###########*/
+			/*300 - 4 == 296 / 2 == 148*/
+			#top li{width:148px; float:left;}
+			#top .right{margin-right:4px;}
+
+			/*########### top / li / p ###########*/
+			#top p{width:100%; padding-bottom:5px;}
+
+			#top .text{font-size:14px;}
+			#top .name{display:none;}
+
+			/*################ itemArea / item(320px) ###############*/
+			#item{width:300px;}
+			#item h3{padding:20px 0 5px; font-size:20px;}
+			#item ul{width:100%;}
+			/*
+				300 / 3 == 100px
+				100 - 2 == 98px
+			*/
+			#item li{width:98px; margin-right:0px; float:left; border:1px solid rgba(0,0,0,0);}
+
+			/*########### item / li / div ###########*/
+			#item div{width:100%; padding:5px 0;}
+			#item p{width:100%; line-height:20px;}
+			
+			#item .name{font-size:16px;}
+			#item .price{font-size:12px;}
+
+			/*################ middleArea / middle(320px) ###############*/
+			#middleArea{display:none;}
+
+			/*################ setArea / set(320px) ###############*/
+			#setArea{display:none;}
+
+			/*################ topArea / top(320px) ###############*/
+			#trend{width:300px; margin:0 auto;}
+
+			#trend h3{padding:20px 0 5px; font-size:20px;}
+
+			/*########### top / li ###########*/
+			/*300 - 4 == 296 / 2 == 148*/
+			#trend li{width:148px; float:left;}
+			#trend .right{margin-right:4px;}
+
+			/*########### top / li / p ###########*/
+			#trend p{width:100%; padding-bottom:5px;}
+
+			#trend .text{font-size:14px;}
+			#trend .name{display:none;}
+
+			/*################ bestArea / best(320px) ###############*/
+			#bestArea{width:100%;}
+			#best{width:300px;}
+			#best h3{padding:20px 0 5px; font-size:20px;}
+			/*
+			#best ul{width:100%;}
+			
+				300 / 3 == 100px
+				100 - 2 == 98px
+			*/
+			#best li{width:100px; margin-right:0px;}
+			#best .no_margin{display:none;}
+
+			/*100 - 2 == 98px*/
+			#best .img{width:98px;}
+
+			/*########### best / li / div ###########*/
+			#best p{line-height:20px;}
+			
+			#best .item{font-size:12px;}
+			#best .title{font-size:14px;}
+			#best .price{font-size:12px;}
+
+			/*################ serviceArea / service(320px) ###############*/
+			#serviceArea h3{width:300px; padding:20px 0 5px; font-size:20px; margin:0 auto;}
+
+			#service{width:100%;}
+			#service .line{height:40px; line-height:40px; font-size:15px;}
+
+			/*################ service / button ###############*/
+
+			/*
+				li 100px
+				총 10개 세로로 길개해서
+
+				100* 10 == 1000..? 그냥 그대로
+			*/
+			#service li{width:100px; margin-right:22px; float:left;}
+			#service .img{width:98px; border:1px solid rgba(0,0,0,0);}
+			#service .img a img{width:100%;}
+
+			#service .img:hover{border:1px solid #ccc;}
+
+			/*########### service / li / div ###########*/
+			#service div{width:100%; padding:5px 0 5px;}
+			#service p{width:100%; font-size:14px; line-height:20px;}
+			#service .price{font-size:12px; color:#FD8024;}
+
+			/*################ collaboArea / collabo(320px) ###############*/
+			#collaboArea{width:100%;}
+			#collabo{width:100%; margin:0 auto;}
+
+			#collabo h3{width:300px; padding:20px 0 5px; font-size:20px; margin:0 auto;}
+			#collabo .big_img{margin-bottom:1%;}
+
+			/*################ storeArea / store(320px) ###############*/
+			#store{width:300px;}
+			#store .storeBox{width:100%; padding-bottom:80px;}
+			#store .title{width:100%; padding:0;}
+			#store h3{padding:20px 0 5px; font-size:20px; float:none;}
+
+			#store .more{display:none;}
+			
+
+			#store ul{width:100%;}
+			#store li{width:100%; float:none;}
+
+			#store .right{margin-right:0; margin-bottom:1%;}
+
+			/*########### store / li / p ###########*/
+			/*
+				300 - 40 == 260px / 2 == 130px 
+			*/
+			#store .map{width:130px;}
+			#store .map a img{width:100%;}
+
+			/*########### store / li / div ###########*/
+			#store .off{width:130px; font-size:11px;}
+			#store .off p{padding-bottom:0;}
+
+			#store li:after{content:""; display:block; clear:both;}
+
+
+			/*################ footer ###############*/
+			#footer{width:100%; font-size:11px;}
+			#footer a{padding:0 5px;}
+
+			/*################ footer_info(320px) ###############*/
+			#footer_info{width:320px;}
+			#footer_info ul{width:100%; text-align:center; float:none;}
+
+			/*######### footer_info(ul) ##########*/
+			#footer_menu li{display:inline;}
+
+			/*######### follow_us(ul) ##########*/
+				#follow_us{text-align:center;}
+
+			/*################ footerContArea / footerCont(320px) ###############*/
+			#footerContArea a{padding:0 10px;}
+			#footerCont{width:320px; margin:0 auto;}
+			#footerCont div{width:50%; float:left;}
+
+			/*######### footerCont / logo(div) ##########*/
+			/*
+				320px / 2 == 160px
+			*/
+			#footerCont .logo{padding:20px 0;}
+			#footerCont .logo div{width:92%; padding-left:8%;}
+			#footerCont .logo .lego{width:5em;}
+
+			/*######### footerCont / p ##########*/
+			#footerCont p{margin-bottom:10px;}
+
+			/*######### footerCont / logo / location(p) ##########*/
+			#footerCont .location{width:100px; padding:5px;}
+			#footerCont .location span{padding:0;}
+
+			/*######### footerCont / subscribe(div) ##########*/
+			#footerCont .subscribe{padding:20px 0;}
+			/*	width: 160px	*/
+			#footerCont .subscribe div{width:92%; padding-left:8%; border-left:1px solid #dedede;}
+			/*#footerCont p{padding-left:10px;}*/
+			#footerCont .title{height:30px; font-weight:700;}
+			
+			#footerCont input{font-size:11px;}
+			#footerCont .address{width:110px; height:30px; float:none;}
+			#footerCont .btn{width:110px; height:32px; float:none;}
+			#btn{border-radius:5px;}
+
+			/*######### copyrightArea / copyright(320px) ##########*/
+			#copyrightMenu{width:320px; text-align:center;}
+			#copyrightMenu .border{padding-top:10px;}
+
+			#copyright{padding-top:20px;}
+			}
+	</style>
+	<script>
+		// ver-2 선택한 문서가 준비되면 기능구현
+		$(document).ready(function(){
+			/*
+				대상 :				#mobHeaderBtn (div태그)
+				이벤트 :			click
+				이벤트 핸들러 :	#gnbArea(div태그)안의 div태그가 display:block
+			*/
+			$("#mobHeaderBtn").click(function(){
+				$("#gnbArea div").css({"display":"block"});
+			});
+
+			/*
+				대상 :				#gnb(ul) .gnb(li)태그
+				이벤트 :			click
+				이벤트 핸들러 :	#gnb(ul) .gnb(li) ul 태그가 display:block
+									모든 ul class명 작성
+									ㄴ all, set, age, price, mer, interest, bricks, discover, help
+
+				+++++++++++++++++++++++++++++++++
+			*/
+			$("#gnb li a").click(function(){
+				$("#gnb li ul").slideUp(500);
+				$(this).next().slideDown(500);
+			});
+
+			/*#################### service / .button ##################*/
+			/* li 크기 230px+22 == 252px.. 마우스오버..*/
+			$("#inService").prepend($(".scene:last"));
+			$("#inService").css({"marginLeft":"-252px"});
+
+			/*버튼 색상 변경..*/
+			$(".prevBtn").click(function(){
+				$("#inService")/*.stop()*/.animate({"marginLeft":"-=252px"},500,"swing",function(){
+					$("#inService").append( $(".ins:eq(0)") );
+					$("#inService").css({"marginLeft":"-252px"});
+				});
+			});
+
+			$(".nextBtn").click(function(){
+				$("#inService")/*.stop()*/.animate({"marginLeft":"+=252px"},500,"swing",function(){
+					$("#inService").prepend($(".ins:last"));
+					$("#inService").css({"marginLeft":"-252px"});
+				});
+			});
+		});
+	</script>
+ </head>
+
+ <body>
+	<div id="wrap">
+		<div id="headerWrap">
+			<header id="header">
+				<h1>lego</h1>
+				<div id="topManuArea">
+					<ul id="topManu">
+						<!--
+						<li>
+							<a href="#" title="mobileMenu_icon">
+								<span class="plus">+</span>
+							</a>
+						</li>-->
+						<li>
+							<a href="http://idph0203.dothome.co.kr/lego/" title="aboutUs">
+								About Us
+							</a>
+						</li>
+						<li>
+							<a href="http://idph0203.dothome.co.kr/lego/" title="play_zone">
+								PLAY ZONE
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div id="lego_area">
+					<div class="lego_area">
+						<div class="black">
+							<div id="mobHeaderBtn">
+								<p>─</p>
+							</div>
+						</div>
+						<div class="main">
+							<div id="logo">
+								<!--헤더 참고 사이트
+									https://www.dotorisup.com
+									카테고리 참고 사이트
+									https://www.redprinting.co.kr/ko
+								-->
+								<a href="http://idph0203.dothome.co.kr/lego/" title="lego">
+									<img src="img/logo0.svg" alt="lego"/>
+								</a>
+							</div>
+						</div>
+						<div id="sch">
+							<form action="#" method="get">
+								<fieldset>
+									<legend>검색</legend>
+									<p class="input">
+										<input id="search" type="text" name="search" title="검색"/>
+									</p>
+									<p class="btn"><!--input으로?-->
+										<a href="#" title="검색버튼">
+											<img src="img/search.png" alt="돋보기_이미지"/>
+										</a>
+									</p>
+								</fieldset>
+							</form>
+							<div id="infoMenu">
+								<ul>
+									<li>
+										<a href="#" title="login">login</a>
+									</li>
+									<li>
+										<a href="#" title="sign_up">sign_up</a>
+									</li>
+									<li>
+										<a href="#" title="basket">basket <span class="number">0</span></a>
+									</li>
+									<li>
+										<a href="#" title="vip">vip</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="gnbArea">
+					<div>
+						<ul id="gnb">
+							<li class="gnb">
+								<a href="#" title="all">All<span class="plus">+</span></a>
+								<ul class="all">
+									<li>
+										<a href="#" title="see_all_SETS">
+											SEE ALL SETS
+										</a>
+									</li>
+									<li>
+										<a href="#" title="see_all_ages">
+											SEE ALL AGES
+										</a>
+									</li>
+									<li>
+										<a href="#" title="see_all_Interests">
+											SEE ALL INTERESTS
+										</a>
+									</li>
+									<li>
+										<a href="#" title="see_all_bricks">
+											SEE ALL BRICKS
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="set">Sets by theme</a>
+								<ul class="set">
+									<li>
+										<a href="#" title="architecture">
+											Architecture
+										</a>
+									</li>
+									<li>
+										<a href="#" title="batman">
+											Batman™
+										</a>
+									</li>
+									<li>
+										<a href="#" title="boost">
+											BOOST
+										</a>
+									</li>
+									<li>
+										<a href="#" title="brickHeadz">
+											BrickHeadz
+										</a>
+									</li>
+									<li>
+										<a href="#" title="brick_sketches">
+											Brick Sketches™
+										</a>
+									</li>
+									<li>
+										<a href="#" title="city">
+											City
+										</a>
+									</li>
+									<li>
+										<a href="#" title="disney">
+											Disney™
+										</a>
+									</li>
+									<li>
+										<a href="#" title="dots">
+											DOTS
+										</a>
+									</li>
+									<li>
+										<a href="#" title="friends">
+											Friends
+										</a>
+									</li>
+									<li>
+										<a href="http://idph0203.dothome.co.kr/harryPotter" title="harry_potter">
+											Harry Potter™
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="age">Age</a>
+								<ul class="age">
+									<li>
+										<a href="#" title="ages1">
+											1.5+
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages4">
+											4+
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages6">
+											6
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages9">
+											9
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages13">
+											13
+										</a>
+									</li>
+									<li>
+										<a href="#" title="ages18">
+											18
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="price_ranges">Price Ranges</a>
+								<ul class="price">
+									<li>
+										<a href="#" title="under_$25">
+											Under $25
+										</a>
+									</li>
+									<li>
+										<a href="#" title="$25_$50">
+											$25 - $50
+										</a>
+									</li>
+									<li>
+										<a href="#" title="$50_$75">
+											$50 - $75
+										</a>
+									</li>
+									<li>
+										<a href="#" title="$75_$100">
+											$75 - $100
+										</a>
+									</li>
+									<li>
+										<a href="#" title="over_$100">
+											Over $100
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="lego_merchandise">LEGO Merchandise</a>
+								<ul class="mer">
+									<li>
+										<a href="#" title="accessories">
+											Accessories
+										</a>
+									</li>
+									<li>
+										<a href="#" title="backpacks_lunch_boxes">
+											Backpacks &amp; Lunch Boxes
+										</a>
+									</li>
+									<li>
+										<a href="#" title="books">
+											Books
+										</a>
+									</li>
+									<li>
+										<a href="#" title="keychains">
+											Keychains
+										</a>
+									</li>
+									<li>
+										<a href="#" title="puzzles_board_games">
+											Puzzles &amp; Board games
+										</a>
+									</li>
+									<li>
+										<a href="#" title="role_play_costumes">
+											Role Play &amp; Costumes
+										</a>
+									</li>
+									<li>
+										<a href="#" title="stationery">
+											Stationery
+										</a>
+									</li>
+									<li>
+										<a href="#" title="storage">
+											Storage
+										</a>
+									</li>
+									<li>
+										<a href="#" title="keychains">
+											Keychains
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="interests">Interests</a>
+								<ul class="interest">
+									<li>
+										<a href="#" title="adults_welcome">
+											Adults Welcome
+										</a>
+									</li>
+									<li>
+										<a href="#" title="animals">
+											Animals
+										</a>
+									</li>
+									<li>
+										<a href="#" title="arts_and_crafts">
+											Arts and Crafts
+										</a>
+									</li>
+									<li>
+										<a href="#" title="buildings">
+											Buildings
+										</a>
+									</li>
+									<li>
+										<a href="#" title="cars">
+											Cars
+										</a>
+									</li>
+									<li>
+										<a href="#" title="coding_for_kids">
+											Coding for Kids
+										</a>
+									</li>
+									<li>
+										<a href="#" title="dragons">
+											Dragons
+										</a>
+									</li>
+									<li>
+										<a href="#" title="fantasy">
+											Fantasy
+										</a>
+									</li>
+									<li>
+										<a href="#" title="movies">
+											Movies
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="bricks">Bricks</a>
+								<ul class="bricks">
+									<li>
+										<a href="#" title="Pick a Brick">
+											Pick a Brick
+										</a>
+									</li>
+									<li>
+										<a href="#" title="brick_accessories_kits">
+											Brick Accessories &amp; Kits
+										</a>
+									</li>
+									<li>
+										<a href="#" title="arts_and_crafts">
+											Arts and Crafts
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="discover">DISCOVER</a>
+								<ul class="discover">
+									<li class="discover">
+										<a href="#" title="all_lego_themes">
+											All LEGO Themes
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="lego_news">
+											LEGO News
+										</a>
+									</li>
+									<li class="discover">
+										<a href="http://idph0203.dothome.co.kr/about" title="about_us">
+											About Us
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="adults_welcome">
+											Adults Welcome
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="lego_life_magazine">
+											LEGO Life Magazine
+										</a>
+									</li>
+									<li class="discover">
+										<a href="#" title="lego_life_app">
+											LEGO Life App
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="help">HELP</a>
+								<ul class="help">
+									<li class="help">
+										<a href="#" title="check_order_status">
+											Check Order Status
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="delivery_n_returns">
+											Delivery &amp; Returns
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="find_a_lego_store">
+											Find a LEGO Store
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="find_building_instructions">
+											Find Building Instructions
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="common_questions">
+											Common Questions
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="contact_us">
+											Contact Us
+										</a>
+									</li>
+									<li class="help">
+										<a href="#" title="replacement_parts">
+											Replacement Parts
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="gnb">
+								<a href="#" title="get_creative"><span class="plus">GET CREATIVE</span></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</header>
+		</div>
+		<div id="container">
+			<div id="legoArea">
+				<div id="lego">
+					<div id="wideArea"><!--와이드-->
+						<div id="wide">
+							<p class="img">
+								<a href="idph0203.dothome.co.kr/portfolio" title="해변인명구조대기지_주소">
+									<img src="img/wide2.jpg" alt="레고_이미지0"/>
+								</a>
+							</p>
+							<div id="mainText">
+								<div class="textBox">
+									<h2>
+										Summer Beach Playsets for Kids 5+
+									</h2>
+									<p class="text">
+										Recreate a fun day at the beach with LEGO® City playsets packed with time-consuming, imaginative play.
+									</p>
+									<div class="button">
+										<p class="shopBtn">
+											<a href="https://www.lego.com/en-us/product/beach-lifeguard-station-60328" title="beach_lifeguard_station">
+												Shop now
+											</a>
+										</p>
+										<p class="learnBtn">
+											<a href="https://www.lego.com/en-us/product/beach-lifeguard-station-60328" title="beach_lifeguard_station">
+												Learn more
+											</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="guidArea"><!--와이드 아래 3개 상자-->
+						<div id="guid">
+							<ul><!--크기 1260px (와이드 아닌구역)-->
+								<li>
+									<p class="img">
+										<a href="http://idph0203.dothome.co.kr/camper" title="new">
+											<img src="img/guid0.jpg" alt="신제품_이미지"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="http://idph0203.dothome.co.kr/camper" title="new">
+											<b class="bold">New</b><span>Always new products</span>
+										</a>
+									</p>
+								</li>
+								<li>
+									<p class="img">
+										<a href="http://idph0203.dothome.co.kr/character" title="exclusive">
+											<img src="img/guid1.jpg" alt="독점제품_이미지"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="http://idph0203.dothome.co.kr/character" title="exclusive">
+											<b class="bold">Exclusive</b><span>Only available in Lego</span>
+										</a>
+									</p>
+								</li>
+								<li>
+									<p class="img">
+										<a href="http://idph0203.dothome.co.kr/harryPotter" title="sale">
+											<img src="img/guid2.jpg" alt="행사제품_이미지"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="http://idph0203.dothome.co.kr/harryPotter" title="sale">
+											<b class="bold">Sale</b><span>Find LEGO sets on sale</span>
+										</a>
+									</p>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="topArea"><!--li, 이번주 최고인기 2개-->
+						<section id="top">
+							<h3>This week's top picks</h3>
+							<ul>
+								<li class="right">
+									<p class="img">
+										<a href="https://www.lego.com/ko-kr/product/lego-ideas-home-alone-21330?icmp=HP-SHCC-Standard-ID_CC_Block_21330_LEGO_Ideas_Home_Alone_Still_Life_HP-EX-ID-OBHKAJRF6L" title="homeAlone">
+											<img src="img/top0.jpg" alt="인기제품0"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="https://www.lego.com/ko-kr/product/lego-ideas-home-alone-21330?icmp=HP-SHCC-Standard-ID_CC_Block_21330_LEGO_Ideas_Home_Alone_Still_Life_HP-EX-ID-OBHKAJRF6L" title="homeAlone">
+											New LEGO® Ideas Home Alone
+										</a>
+									</p>
+									<p class="name">
+										A must-have for the holiday season with LEGO® fan-made sets.
+									</p>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/ko-kr/product/super-mario-64-question-mark-block-71395?icmp=HP-SHCC-Standard-MAR_CC_Block_71395_Still_Life_HP-PR-MAR-AZOX2NB42D" title="homeAlone">
+											<img src="img/top1.jpg" alt="인기제품1"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="https://www.lego.com/ko-kr/product/super-mario-64-question-mark-block-71395?icmp=HP-SHCC-Standard-MAR_CC_Block_71395_Still_Life_HP-PR-MAR-AZOX2NB42D" title="superMario">
+											Super Mario 64™ "?" block
+										</a>
+									</p>
+									<p class="name">
+										"?" with LEGO® sets Check out the surprises hidden in the blocks.
+									</p>
+								</li>
+							</ul>
+						</section>
+					</div>
+					<div id="itemArea"><!--li, 10개-->
+						<section id="item">
+							<h3>Recommended For You</h3>
+							<ul>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/porsche-911-10295" title="porsche_911">
+											<img src="img/item0.jpg" alt="제품_이미지0"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/porsche-911-10295" title="porsche_911">
+												Porsche 911
+											</a>
+										</p>
+										<p class="price">
+											$149.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/woody-and-bo-peep-40553" title="woody_and_bo_peep">
+											<img src="img/item1.jpg" alt="제품_이미지1"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/woody-and-bo-peep-40553" title="woody_and_bo_peep">
+												Woody and Bo Peep
+											</a>
+										</p>
+										<p class="price">
+											$19.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/ko-kr/product/fish-tank-31122" title="fishTank">
+											<img src="img/item2.jpg" alt="제품_이미지2"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/ko-kr/product/fish-tank-31122" title="fishTank">
+												Fish Tank
+											</a>
+										</p>
+										<p class="price">
+											$29.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/hogwarts-castle-71043" title="hogwarts">
+											<img src="img/item3.jpg" alt="제품_이미지3"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/hogwarts-castle-71043" title="hogwarts">
+												Hogwarts™ Castle
+											</a>
+										</p>
+										<p class="price">
+											$399.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/buzz-lightyear-40552" title="buzzLightyear">
+											<img src="img/item4.jpg" alt="제품_이미지4"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/buzz-lightyear-40552" title="buzzLightyear">
+												Buzz Lightyear
+											</a>
+										</p>
+										<p class="price">
+											$9.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/easter-rabbits-display-40523" title="easterRabbits">
+											<img src="img/item5.jpg" alt="제품_이미지5"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/easter-rabbits-display-40523" title="easterRabbits">
+												Easter Rabbits Display
+											</a>
+										</p>
+										<p class="price">
+											$12.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/easter-rabbits-display-40523" title="starWars_at_at">
+											<img src="img/item6.jpg" alt="제품_이미지6"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="#" title="starWars_at_at">
+												AT-AT™
+											</a>
+										</p>
+										<p class="price">
+											$799.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/roses-40460" title="roses">
+											<img src="img/item7.jpg" alt="제품_이미지7"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/roses-40460" title="roses">
+												Roses
+											</a>
+										</p>
+										<p class="price">
+											$12.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/lego-vespa-125-10298" title="vespa_125">
+											<img src="img/item8.jpg" alt="제품_이미지8"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/lego-vespa-125-10298" title="vespa_125">
+												LEGO® Vespa 125
+											</a>
+										</p>
+										<p class="price">
+											$99.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/big-message-board-41952" title="big_message_board">
+											<img src="img/item9.jpg" alt="제품_이미지9"/>
+										</a>
+									</p>
+									<div>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/big-message-board-41952" title="big_message_board">
+												Big Message Board
+											</a>
+										</p>
+										<p class="price">
+											$39.99
+										</p>
+									</div>
+								</li>
+							</ul>
+						</section>
+					</div>
+					<div id="middleArea"><!--중간 와이드-->
+						<div id="middle">
+							<div class="img">
+								<a href="https://www.lego.com/en-us/themes/marvel?icmp=HP-SHCC-Standard-MV_CC_Block_76206_still_life_HP-TH-MV-KBGW29LK6G" title="marvel">
+									<img src="img/marble0.jpg" alt="홍보이미지0"/>
+								</a>
+							</div>
+							<div class="descArea">
+								<div class="desc">
+									<h3>
+										Authentically detailed iconic hero
+									</h3>
+									<h4>
+										Exciting adventures await with new LEGO® Marvel sets.
+									</h4>
+									<div class="button">
+										<p class="shopBtn">
+											<a href="https://www.lego.com/en-us/themes/marvel?icmp=HP-SHCC-Standard-MV_CC_Block_76206_still_life_HP-TH-MV-KBGW29LK6G" title="marvel_products">
+												Products
+											</a>
+										</p>
+										<p class="moreBtn">
+											<a href="https://www.lego.com/en-us/themes/marvel/about" title="marvel_more">
+												Learn more
+											</a>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="setArea"><!--1개 div, 세트 상품-->
+						<section id="set">
+							<h4>Only LEGO</h4>
+							<h3>Featured sets</h3>
+							<div class="big_set">
+								<div>
+									<p class="img">
+										<a href="http://idph0203.dothome.co.kr/harryPotter" title="hogwarts_castle">
+											<img src="img/set0.jpg" alt="세트_이미지0"/>
+										</a>
+									</p>
+									<p class="text">
+										Meet the exciting fantasy world.
+									</p>
+									<p class="name">
+										<a href="https://www.lego.com/en-us/product/hogwarts-castle-71043" title="hogwarts_castle">
+											Harry Potter
+										</a>
+									</p>
+								</div>
+							</div>
+							<ul>
+								<li>
+									<div>
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/super-mario-64-question-mark-block-71395" title="superMario">
+												<img src="img/set1.jpg" alt="세트_이미지1"/>
+											</a>
+										</p>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/super-mario-64-question-mark-block-71395" title="superMario">
+												Super Mario
+											</a>
+										</p>
+									</div>
+								</li>
+								<li>
+									<div>
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/sonic-the-hedgehog-green-hill-zone-21331" title="sonic">
+												<img src="img/set2.jpg" alt="세트_이미지2"/>
+											</a>
+										</p>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/sonic-the-hedgehog-green-hill-zone-21331" title="sonic">
+												Sonic
+											</a>
+										</p>
+									</div>
+								</li>
+								<li>
+									<div>
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/thor-s-hammer-76209" title="thor_hammer">
+												<img src="img/set3.jpg" alt="세트_이미지3"/>
+											</a>
+										</p>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/thor-s-hammer-76209" title="thor_hammer">
+												Thor's Hammer
+											</a>
+										</p>
+									</div>
+								</li>
+								<li>
+									<div>
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/snowtrooper-battle-pack-75320" title="snowtrooper">
+												<img src="img/set4.jpg" alt="세트_이미지4"/>
+											</a>
+										</p>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/snowtrooper-battle-pack-75320" title="snowtrooper">
+												Star Wars™
+											</a>
+										</p>
+									</div>
+								</li>
+								<li>
+									<div>
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/1989-batwing-76161" title="batwing">
+												<img src="img/set5.jpg" alt="세트_이미지5"/>
+											</a>
+										</p>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/1989-batwing-76161" title="batwing">
+												1989 Batwing
+											</a>
+										</p>
+									</div>
+								</li>
+								<li>
+									<div>
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/boutique-hotel-10297" title="boutiqueHotel">
+												<img src="img/set6.jpg" alt="세트_이미지6"/>
+											</a>
+										</p>
+										<p class="name">
+											<a href="https://www.lego.com/en-us/product/boutique-hotel-10297" title="boutiqueHotel">
+												Boutique Hotel
+											</a>
+										</p>
+									</div>
+								</li>
+							</ul>
+						</section>
+					</div>
+					<div id="trendArea"><!--li, 2개, 위와 동일(영상으로?)-->
+						<section id="trend">
+							<h3>Trending now</h3>
+							<ul>
+								<li class="right">
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/valentine-lovebirds-40522" title="lovebirds">
+											<img src="img/trend1.jpg" alt="trend1"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="https://www.lego.com/en-us/product/valentine-lovebirds-40522" title="lovebirds">
+											Valentine Lovebirds
+										</a>
+									</p>
+									<p class="name">
+										Valentine’s Day Gifts
+									</p>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/flower-bouquet-10280" title="bouquet">
+											<img src="img/trend0.jpg" alt="trend0"/>
+										</a>
+									</p>
+									<p class="text">
+										<a href="https://www.lego.com/en-us/product/flower-bouquet-10280" title="bouquet">
+											Flower Bouquet
+										</a>
+									</p>
+									<p class="name">
+										Creator Expert
+									</p>
+								</li>
+							</ul>
+						</section>
+					</div>
+					<div id="bestArea"><!--li, 4개-->
+						<section id="best">
+							<h3>Best Sellers</h3>
+							<ul>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/boost-creative-toolbox-17101" title="boost">
+											<img src="img/best0.jpg" alt="best_제품0"/>
+										</a>
+									</p>
+									<div>
+										<p class="item">
+											BOOST
+										</p>
+										<p class="title">
+											<a href="https://www.lego.com/en-us/product/into-the-deep-bracelets-with-charms-41942" title="boost">
+												BOOST Creative Toolbox
+											</a>
+										</p>
+										<p class="price">
+											$159.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/into-the-deep-bracelets-with-charms-41942" title="dots">
+											<img src="img/best1.jpg" alt="best_제품1"/>
+										</a>
+									</p>
+									<div>
+										<p class="item">
+											DOTS
+										</p>
+										<p class="title">
+											<a href="https://www.lego.com/en-us/product/into-the-deep-bracelets-with-charms-41942" title="dots">
+												Into the Deep Bracelets with Charms
+											</a>
+										</p>
+										<p class="price">
+											$5.99
+										</p>
+									</div>
+								</li>
+								<li>
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/the-ice-castle-43197" title="the_ice_caslt">
+											<img src="img/best2.jpg" alt="best_제품2"/>
+										</a>
+									</p>
+									<div>
+										<p class="item">
+											Disney™
+										</p>
+										<p class="title">
+											<a href="https://www.lego.com/en-us/product/into-the-deep-bracelets-with-charms-41942" title="the_ice_caslt">
+												The Ice Castle
+											</a>
+										</p>
+										<p class="price">
+											$199.99
+										</p>
+									</div>
+								</li>
+								<li class="no_margin">
+									<p class="img">
+										<a href="https://www.lego.com/en-us/product/the-ice-castle-43197" title="harryPotter">
+											<img src="img/best3.jpg" alt="best_제품3"/>
+										</a>
+									</p>
+									<div>
+										<p class="item">
+											Harry Potter™
+										</p>
+										<p class="title">
+											<a href="https://www.lego.com/en-us/product/into-the-deep-bracelets-with-charms-41942" title="harryPotter">
+												Harry Potter &amp; Hermione Granger™
+											</a>
+										</p>
+										<p class="price">
+											$199.99
+										</p>
+									</div>
+								</li>
+							</ul>
+						</section>
+					</div>
+					<section id="serviceArea"><!--같은 li 10개 다르게 활용-->
+						<h3>Service</h3>
+						<div id="service">
+							<p class="line">
+								<span class="nm0">Today's</span> <span class="nm1">Recommended</span> <span class="nm2">Product</span> <span class="nm3">of</span> <span class="nm4">Lego!</span>
+							</p>
+							<div class="button">
+								<p class="nextBtn">
+									<a href="#none" title="nextBtn"><img src="img/button1.png" alt="button1"/></a>
+								</p>
+								<p class="prevBtn">
+									<a href="#none" title="prevBtn"><img src="img/button2.png" alt="button2"/></a>
+								</p>
+							</div>
+							<div class="meau">
+								<ul id="inService">
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/porsche-911-10295" title="porsche_911">
+												<img src="img/item0.jpg" alt="제품_이미지0"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/porsche-911-10295" title="porsche_911">
+													Porsche 911
+												</a>
+											</p>
+											<p class="price">
+												$149.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/woody-and-bo-peep-40553" title="woody_and_bo_peep">
+												<img src="img/item1.jpg" alt="제품_이미지1"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/woody-and-bo-peep-40553" title="woody_and_bo_peep">
+													Woody and Bo Peep
+												</a>
+											</p>
+											<p class="price">
+												$19.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/ko-kr/product/fish-tank-31122" title="fishTank">
+												<img src="img/item2.jpg" alt="제품_이미지2"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/ko-kr/product/fish-tank-31122" title="fishTank">
+													Fish Tank
+												</a>
+											</p>
+											<p class="price">
+												$29.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/hogwarts-castle-71043" title="hogwarts">
+												<img src="img/item3.jpg" alt="제품_이미지3"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/hogwarts-castle-71043" title="hogwarts">
+													Hogwarts™ Castle
+												</a>
+											</p>
+											<p class="price">
+												$399.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/buzz-lightyear-40552" title="buzzLightyear">
+												<img src="img/item4.jpg" alt="제품_이미지4"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/buzz-lightyear-40552" title="buzzLightyear">
+													Buzz Lightyear
+												</a>
+											</p>
+											<p class="price">
+												$9.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/easter-rabbits-display-40523" title="easterRabbits">
+												<img src="img/item5.jpg" alt="제품_이미지5"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/easter-rabbits-display-40523" title="easterRabbits">
+													Easter Rabbits Display
+												</a>
+											</p>
+											<p class="price">
+												$12.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/easter-rabbits-display-40523" title="starWars_at_at">
+												<img src="img/item6.jpg" alt="제품_이미지6"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="#" title="starWars_at_at">
+													AT-AT™
+												</a>
+											</p>
+											<p class="price">
+												$799.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/roses-40460" title="roses">
+												<img src="img/item7.jpg" alt="제품_이미지7"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/roses-40460" title="roses">
+													Roses
+												</a>
+											</p>
+											<p class="price">
+												$12.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/lego-vespa-125-10298" title="vespa_125">
+												<img src="img/item8.jpg" alt="제품_이미지8"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/lego-vespa-125-10298" title="vespa_125">
+													LEGO® Vespa 125
+												</a>
+											</p>
+											<p class="price">
+												$99.99
+											</p>
+										</div>
+									</li>
+									<li class="ins">
+										<p class="img">
+											<a href="https://www.lego.com/en-us/product/big-message-board-41952" title="big_message_board">
+												<img src="img/item9.jpg" alt="제품_이미지9"/>
+											</a>
+										</p>
+										<div class="desc">
+											<p class="name">
+												<a href="https://www.lego.com/en-us/product/big-message-board-41952" title="big_message_board">
+													Big Message Board
+												</a>
+											</p>
+											<p class="price">
+												$39.99
+											</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</section>
+					<div id="collaboArea">
+						<section id="collabo">
+							<h3>LEGO's Collabo</h3>
+							<div>
+								<p class="big_img">
+									<a href="#" title="collabo0">
+										<img src="img/collabo0.jpg" alt="collabo0"/>
+									</a>
+								</p>
+								<ul>
+									<li class="right">
+										<p class="img">
+											<a href="#" title="collabo1">
+												<img src="img/collabo1.jpg" alt="collabo1"/>
+											</a>
+										</p>
+									</li>
+									<li class="left">
+										<p class="img">
+											<a href="#" title="collabo2">
+												<img src="img/collabo2.jpg" alt="collabo2"/>
+											</a>
+										</p>
+									</li>
+								</ul>
+							</div>
+						</section>
+					</div>
+					<div id="storeArea">
+						<div id="store"><!--매장위치는 지도로?-->
+							<div class="storeBox">
+								<div class="title">
+									<h3>
+										Lego store
+									</h3>
+									<p class="more">
+										<a href="https://www.lego.com/ko-kr/stores" title="lego_store">
+											more
+										</a>
+									</p>
+								</div>
+								<ul>
+									<li class="right">
+										<p class="map">
+											<a href="https://www.lego.com/ko-kr/stores/store/goyang" title="youngdeungpo_store">
+												<img src="img/store0.jpg" alt="매장_이미지0"/>
+											</a>
+										</p>
+										<div class="off">
+											<p>
+												<span class="offline">OFFLINE</span>
+											</p>
+											<div class="location">
+												<p>
+													<a href="https://www.lego.com/ko-kr/stores/store/goyang" title="youngdeungpo_store">
+														LEGO youngdeungpo
+													</a>
+												</p>
+												<p>
+													<a href="https://www.lego.com/ko-kr/stores/store/goyang" title="youngdeungpo_store">
+														1, Expo-ro, Yuseong-gu, Daejeon
+													</a>
+												</p>
+											</div>
+											<p class="number">
+												Phone:82-2-3667-0308
+											</p>
+										</div>
+									</li>
+									<li>
+										<p class="map">
+											<a href="https://www.lego.com/ko-kr/stores/store/dongtan" title="goyang_store">
+												<img src="img/store1.jpg" alt="매장_이미지1"/>
+											</a>
+										</p>
+										<div class="off">
+											<p>
+												<span class="offline">OFFLINE</span>
+											</p>
+											<div class="location">
+												<p>
+													<a href="https://www.lego.com/ko-kr/stores/store/dongtan" title="goyang_store">
+														LEGO dongtan
+													</a>
+												</p>
+												<p>
+													<a href="https://www.lego.com/ko-kr/stores/store/dongtan" title="goyang_store">
+														B1F, 15, Yeongjung-ro, Seoul
+													</a>
+												</p>
+											</div>
+											<p class="number">
+												Phone:82-31-8036-3815
+											</p>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="footerWrap">
+			<div id="footer">
+				<div class="footerBorder">
+					<div id="footer_info">
+						<ul id="footer_menu">
+							<li>
+								<a href="#" title="about_us">
+									ABOUT US
+								</a>
+							</li>
+							<li>
+								<a href="#" title="support">
+									SUPPORT
+								</a>
+							</li>
+							<li>
+								<a href="#" title="attractions">
+									ATTRACTIONS
+								</a>
+							</li>
+							<li>
+								<a href="#" title="more_from_us">
+									MORE FROM US
+								</a>
+							</li>
+						</ul>
+						<ul id="follow_us"><!--팔로우 영역, 아이콘의 영역-->
+							<li>
+								<a href="#" title="facebook">
+									<img src="img/facebook.gif" alt="facebook"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="twitter">
+									<img src="img/twitter.gif" alt="twitter"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="instagram">
+									<img src="img/instagram.gif" alt="instagram"/>
+								</a>
+							</li>
+							<li>
+								<a href="#" title="youtube">
+									<img src="img/youtube.gif" alt="youtube"/>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div id="footerContArea">
+					<div id="footerCont">
+						<div class="logo"><!--footer부분의 로고-->
+							<div>
+								<p class="lego">
+									<a href="http://idph0203.dothome.co.kr/lego/" title="lego">
+										<img src="img/logo0.svg" alt="lego"/>
+									</a>
+								</p>
+								<p class="location">
+									<a href="#" title="location">
+										<span>+<!--아이콘--></span>United States
+									</a>
+								</p>
+								<p>
+									<a href="#" title="giftCards">
+										Gift Cards
+									</a>
+								</p>
+								<p>
+									<a href="#" title="legoCatalogue">
+										LEGO Catalogue
+									</a>
+								</p>
+							</div>
+						</div>
+						<div class="subscribe">
+							<div>
+								<p class="title">SUBSCRIBE TO LEGO® SHOP EMAILS</p>
+								<p class="address">
+									<input id="address" type="text" placeholder="your email address" title="address"/>
+								</p>
+								<p class="btn">
+									<input id="btn" type="submit" value="go" title="btn"/>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="copyrightArea">
+					<div id="copyrightMenu">
+						<div class="border">
+							<ul>
+								<li>
+									<a href="#" title="privacy_policy">
+										Privacy Policy
+									</a>
+								</li>
+								<li>
+									<a href="#" title="cookies">
+										Cookies
+									</a>
+								</li>
+								<li>
+									<a href="#" title="legal_notice">
+										Legal Notice
+									</a>
+								</li>
+								<li>
+									<a href="#" title="terms_of_use">
+										Terms of Use
+									</a>
+								</li>
+								<li>
+									<a href="#" title="digital_wellbeing">
+										Digital Wellbeing
+									</a>
+								</li>
+								<li>
+									<a href="#" title="accessibility">
+										Accessibility
+									</a>
+								</li>
+								<li>
+									<a href="#" title="cookieSettings">
+										Cookie Settings
+									</a>
+								</li>
+								<li>
+									<a href="#" title="do_not_sell_my_personal_information">
+										Do Not Sell My Personal Information
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div id="copyright">
+							<p>
+								Copyrigh &copy; 2022 <a href="#" title="ParkJuHee">Park Ju Hee</a>. All Rights Reserved
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+ </body>
+</html>
